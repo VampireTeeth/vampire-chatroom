@@ -14,6 +14,7 @@ function processUserInput(chatApp, socket) {
     systemMessage = chatApp.processCommand(message);
     if(systemMessage) {
       $('#messages').append(divSystemContentElement(systemMessage));
+      $('#messages').scrollTop($('#messages').prop('scrollHeight'));
     }
   } else {
     chatApp.sendMessage($('#room').text(), message);
@@ -36,16 +37,19 @@ $(document).ready(function(){
       message = result.message;
     }
     $('#messages').append(divSystemContentElement(message));
+    $('#messages').scrollTop($('#messages').prop('scrollHeight'));
   });
 
   socket.on('joinResult', function(result){
     $('#room').text(result.room);
     $('#messages').append(divSystemContentElement('Room changed.'));
+    $('#messages').scrollTop($('#messages').prop('scrollHeight'));
   });
 
   socket.on('message', function (message) {
     var newElement = $('<div></div>').text(message.text);
     $('#messages').append(newElement);
+    $('#messages').scrollTop($('#messages').prop('scrollHeight'));
   });
 
   socket.on('rooms', function(rooms) {
